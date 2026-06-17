@@ -26,6 +26,11 @@ plt.show()
 model.load_state_dict(torch.load("models/Model1.pth"))
 show_model_parameters(model)
 
+
+# %% check results
+print(
+    f"Weights: {model.linear.weight.detach().numpy().flatten()}, Bias: {model.linear.bias.detach().numpy().flatten()}")
+
 plt.show()
 
 

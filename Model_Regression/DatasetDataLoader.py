@@ -1,7 +1,6 @@
 #%% packages
 import numpy as np
-import pandas as pd
-import os
+
 import seaborn as sns
 import torch
 from sklearn.metrics import r2_score
