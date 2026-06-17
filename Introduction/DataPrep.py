@@ -62,3 +62,5 @@ print(f"X shape: {X.shape}, y shape: {y.shape}")
 #%% normalize data
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
+
+#%%

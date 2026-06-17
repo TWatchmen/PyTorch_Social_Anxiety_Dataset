@@ -104,3 +104,5 @@ r2 = r2_score(y_pred, y)
 print(f"R-squared: {r2}")
 # %% save model weights
 torch.save(model.state_dict(), 'models/Model1.pth')
+
+#%%
