@@ -71,6 +71,7 @@ plt.ylabel('Actual Anxiety Level [-]')
 r2 = r2_score(y_true=y,
               y_pred=y_pred)
 print(f"R-squared: {r2:.2f}")
+#%%
 
 
 

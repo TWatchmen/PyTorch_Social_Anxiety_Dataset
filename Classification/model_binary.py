@@ -149,4 +149,12 @@ plt.title("ROC Curve")
 plt.legend(loc="lower right")
 plt.grid(True, alpha=0.3)
 plt.show()
-#%%
+
+#%% accuracy score
+print("Accuracy Score:")
+accuracy_score(y_true=y_test_true, y_pred=y_test_pred_class)
+#%% naive calssifier and accuracy score
+model_naive = DummyClassifier(strategy="most_frequent").fit(X_train, y_train)
+y_test_pred_naive = model_naive.predict(X_test)
+print("Accuracy Score(cleaned up):")
+accuracy_score(y_true=y_test_true, y_pred=y_test_pred_naive)
