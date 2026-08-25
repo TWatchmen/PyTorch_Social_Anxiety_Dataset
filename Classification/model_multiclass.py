@@ -1,47 +1,39 @@
-# data import
+# %% packages
 import kagglehub
-# data processing
 import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
-# modelling
-import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 import torch
-from torch.ao.nn.quantized.modules import dropout
 from torch.utils.data import DataLoader, TensorDataset
 import torch.nn as nn
 import torch.optim as optim
 from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.dummy import DummyClassifier
-# visualisation
-import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np
 
-from Classification.model_binary import input_size
-from ModelRegression.DataSplitting import train_dataset, BATCH_SIZE, LEARNING_RATE, EPOCHS
-
-#%% data import
+# %% data import
 path = kagglehub.dataset_download("developerghost/intrusion-detection-logs-normal-bot-scan")
-print("Path to dataset files: ", path)
+
+print("Path to dataset files:", path)
 
 file_path = os.path.join(path, "Network_logs.csv")
 df = pd.read_csv(file_path)
+df.head()
 
-#%% drop features that are not useful for the analysis
+# %% drop features that are not useful for the analysis
 df = df.drop(columns=["Source_IP", "Destination_IP", "Intrusion"])
 
-#%% treat categories variables
-df_cat = pd.get_dummies(df, columns=["Request_Type", "Protocol", "User_Agent", "Status"], drop_first=True, dtype=int)
-print(df_cat.head())
-print(df_cat.dtypes)
+# %% treat categorical variables
+df_cat = pd.get_dummies(df, columns=['Request_Type', 'Protocol', 'User_Agent', 'Status'], drop_first=True, dtype=int)
 
-#%% seperate indeoendant and dependant variables
-X = df_cat.drop(columns=["Scan_Type"]).astype(float)
-y = pd.factorize(df_cat["Scan_Type"])[0].astype(float)
-
+# %% separate independent and dependent variables
+X = df_cat.drop(columns=['Scan_Type']).astype(float)
+y = pd.factorize(df_cat["Scan_Type"])[0].astype(float)  # Convert categorical to numeric labels
 print(f"X shape: {X.shape}, y shape: {y.shape}")
 
-#%% split data into training, validation and testing sets
+# %% split data into training, validation and testing sets
 # First split off test set
 X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 # Split remaining data into train and validation
@@ -228,5 +220,16 @@ accuracy_score(y_true=y_test_true, y_pred=y_test_pred_class)
 model_naive = DummyClassifier(strategy='most_frequent').fit(X_train, y_train)
 y_test_pred_naive = model_naive.predict(X_test)
 accuracy_score(y_true=y_test_true, y_pred=y_test_pred_naive)
+
+# %%
+
+# %% accuracy score
+print(accuracy_score(y_true=y_test_true, y_pred=y_test_pred_class))
+
+# %% naive classifier and accuracy score
+model_naive = DummyClassifier(strategy='most_frequent').fit(X_train, y_train)
+y_test_pred_naive = model_naive.predict(X_test)
+print(accuracy_score(y_true=y_test_true, y_pred=y_test_pred_naive))
+
 
 # %%
